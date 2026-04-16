@@ -6,6 +6,8 @@ import com.jbruno.workshop_mongo.repository.UserRepository;
 import com.jbruno.workshop_mongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +34,18 @@ public class UserService {
     public void delete (String id) {
         findById(id);
         repository.deleteById(id);
+    }
+
+    public User update(User obj) {
+        User newUser = repository.findById(obj.getId())
+                .orElseThrow(() -> new ObjectNotFoundException("ID não encontrado"));
+        updateData(newUser, obj);
+        return repository.save(newUser);
+    }
+
+    public void updateData(User newUser, User obj) {
+        newUser.setName(obj.getName());
+        newUser.setEmail(obj.getEmail());
     }
 
     public User fromDTO(UserDTO objDto) {
