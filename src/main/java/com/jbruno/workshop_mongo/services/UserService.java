@@ -1,5 +1,6 @@
 package com.jbruno.workshop_mongo.services;
 
+import com.jbruno.workshop_mongo.DTO.UserDTO;
 import com.jbruno.workshop_mongo.domain.User;
 import com.jbruno.workshop_mongo.repository.UserRepository;
 import com.jbruno.workshop_mongo.services.exception.ObjectNotFoundException;
@@ -23,4 +24,13 @@ public class UserService {
         return repository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
+
+    public User insert(User obj) {
+        return repository.insert(obj);
+    }
+
+    public User fromDTO(UserDTO objDto) {
+        return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
+    }
+
 }
